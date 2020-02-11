@@ -70,19 +70,47 @@ app.get('/devs&team=:team', async (req, res, next) => {
 });
 
 app.get('/weekDates', async (req, res, next) => {
-  //TODO this should be calculated, depending on the earliest release, and the latest. 
-  // returned value should look like {startingDate: '1/1/2020', weekNumber:1}. 
-  //client should expect that object, instead of currently array of w?. 
+  //TODO this should be calculated, depending on the earliest release, and the latest.
+  // returned value should look like {startingDate: '1/1/2020', weekNumber:1}.
+  //client should expect that object, instead of currently array of w?.
   res.json(['w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11', 'w12']);
 });
 
-// prettier-ignore
-app.get("/epics", async (req, res, next) => {
+app.get('/epics', async (req, res, next) => {
   try {
     const epics = await dbService.getEpics();
     res.json(epics);
   } catch (e) {
     console.log('/epics failed! because: ', e);
     res.json({});
-  } 
-  });
+  }
+});
+
+const isTeamExists = async teamName => {
+  const devDetails = await dbService.getDevsWithDetails();
+  return devDetails.some(team => team.name.toLowerCase() === teamName.toLowerCase());
+};
+
+app.get('/plans&team=:team', async (req, res, next) => {
+  try {
+    const teamName = req.params['team'].toLowerCase();
+    if (await !isTeamExists(teamName)) {
+      throw `team does not exist! ${teamName}`;
+    }
+    const plans = await dbService.getPlans(teamName);
+    res.json(plans);
+  } catch (e) {
+    console.log('/plans failed! because: ', e);
+    res.json({});
+  }
+});
+
+app.get('/plans', async (req, res, next) => {
+  try {
+    const plans = await dbService.getPlans();
+    res.json(plans);
+  } catch (e) {
+    console.log('/plans failed! because: ', e);
+    res.json({});
+  }
+});

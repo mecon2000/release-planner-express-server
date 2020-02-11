@@ -35,15 +35,23 @@ const getEpics = async () => {
   return data.val();
 };
 
+//TODO should either handle teamName, or remove altogether (+remove app.get('/plans&team=:team'))
+const getPlans = async (teamName) => {
+  let data = await db.ref('plans').once('value');
+  return data.val();
+};
+
 //#endregion getters
 //#region initializing the DB
 
 const resetToInitialDB = async () => {
   setInitialGroups();
   setInitialTeams();
+  setInitialDevsCapacity();
   setInitialDevs();
   setInitialReleases();
   setInitialEpics();
+  setInitialPlans();
 };
 
 const setInitialGroups = async () => {
@@ -92,86 +100,39 @@ const setInitialReleases = async () => {
 };
 
 const setInitialEpics = async () => {
+  // prettier-ignore
   const epics = [
-    {
-      name: 'Snapshot wave 2',
-      shortName: 'snapshot w2',
-      release: '20B',
-      priority: '100',
-      program: 'ortho',
-      estimations: {
-        FE: { est: '15', max_parallel: '1' },
-        BE: { est: '6', max_parallel: '1' },
-        Core: { est: '5', max_parallel: '1' },
-        Scanner: { est: '0', max_parallel: '0' },
-        MSK: { est: '0', max_parallel: '0' },
-        ALG: { est: '0', max_parallel: '0' }
-      },
-      candidate_teams: ['Spiders', 'Gold Strikers']
-    },
-    {
-      name: 'Patient-management with IDS',
-      shortName: 'patient-mng',
-      release: '20B',
-      priority: '200',
-      program: 'ortho',
-      estimations: {
-        FE: { est: '10', max_parallel: '1' },
-        BE: { est: '15', max_parallel: '1' },
-        Core: { est: '7', max_parallel: '1' },
-        Scanner: { est: '0', max_parallel: '1' },
-        MSK: { est: '0', max_parallel: '1' },
-        ALG: { est: '0', max_parallel: '1' }
-      },
-      candidate_teams: ['Sharks', 'Gold Strikers']
-    },
-    {
-      name: 'Texture mapping',
-      shortName: 'texture',
-      release: '20B',
-      priority: '300',
-      program: 'ortho',
-      estimations: {
-        FE: { est: '10', max_parallel: '1' },
-        BE: { est: '0', max_parallel: '1' },
-        Core: { est: '10', max_parallel: '1' },
-        Scanner: { est: '0', max_parallel: '1' },
-        MSK: { est: '0', max_parallel: '1' },
-        ALG: { est: '0', max_parallel: '1' }
-      },
-      candidate_teams: ['Spiders', 'Gold Strikers']
-    },
-    {
-      name: 'Account management',
-      shortName: 'accnt-mng',
-      release: '20A5',
-      priority: '50',
-      program: 'ortho',
-      estimations: {
-        FE: { est: '15', max_parallel: '1' },
-        BE: { est: '15', max_parallel: '1' },
-        Core: { est: '0', max_parallel: '0' },
-        Scanner: { est: '0', max_parallel: '0' },
-        MSK: { est: '0', max_parallel: '0' },
-        ALG: { est: '0', max_parallel: '0' }
-      },
-      candidate_teams: ['Spiders']
-    }
+    { name: 'Snapshot wave 2',              shortName: 'snapshot w2', release: '20B', priority: '100', program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '6',  max_parallel: '1' }, Core: { est: '5',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['Spiders', 'Gold Strikers']},
+    { name: 'Patient-management with IDS',  shortName: 'patient-mng', release: '20B', priority: '200', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '7',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['Sharks', 'Gold Strikers']},
+    { name: 'Texture mapping',              shortName: 'texture',     release: '20B', priority: '300', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '0',  max_parallel: '1' }, Core: { est: '10', max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['Spiders', 'Gold Strikers']},
+    { name: 'Account management',           shortName: 'accnt-mng',   release: '20A5',priority: '50',  program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '0',  max_parallel: '0' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['Spiders']}
   ];
   let ref = db.ref('epics');
   await ref.set(epics);
 };
 
+const setInitialPlans = async () => {
+  const plans = [
+    { week: 'w05', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+    { week: 'w06', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+    { week: 'w07', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+    { week: 'w08', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+    { week: 'w09', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+    { week: 'w10', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+  ];
+  let ref = db.ref('plans');
+  await ref.set(plans);
+};
+
 //#endregion initializing the DB
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////  temp stuff, remove later  /////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// const f = async () => {
-//   await setInitialGroups();
+//  const f = async () => {
+//      await setInitialPlans();
+//  }
 //   await setInitialTeams();
 //   await setInitialReleases();
 //   await setInitialDevsCapacity();
@@ -189,7 +150,7 @@ const setInitialEpics = async () => {
 //   // });
 // };
 
-// f();
+ //f();
 
 module.exports = {
   resetToInitialDB,
@@ -197,5 +158,6 @@ module.exports = {
   getDevsWithDetails,
   getDevsCapacity,
   getReleases,
-  getEpics
+  getEpics,
+  getPlans
 };
