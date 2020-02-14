@@ -1,4 +1,5 @@
 const dbService = require('./services/db/dbService');
+const planCalculator = require('./planCalculator');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -114,3 +115,20 @@ app.get('/plans', async (req, res, next) => {
     res.json({});
   }
 });
+
+//TODO should be post, don't return new plan. insteda, make client listen to changes from server (push notifications?)
+app.get('/plans/recalculate&team=:team', async (req, res, next) => {
+  try {
+    const teamName = req.params['team'].toLowerCase();
+    if (await !isTeamExists(teamName)) {
+      throw `team does not exist! ${teamName}`;
+    }
+    const newPlans = await planCalculator.calculatePlan(teamName);
+    res.json(newPlans);
+  } catch (e) {
+    console.log('/plans/recalculate failed! because: ', e);
+    res.json({});
+  }
+});
+
+
