@@ -6,17 +6,6 @@ const getCapacityfor1Dev = (allDevsCapacities, devName, week) => {
   return capacityInSpecificWeek;
 };
 
-//TODO implement
-//const getWeekDates = () => ['w5', 'w6', 'w7', 'w8', 'w9', 'w10', 'w11', 'w12'];
-
-//  const getEpicNames = () => ['snapshot-w2', /*'patient-mgmt with IDS', 'texture mapping',*/ 'accnt-management'];
-
-//    const getEpicNameFromEpicObj = async (epicObj, epicIndex) => {
-//     const epics = await dbService.getEpics()
-//     epicObj.name = await dbService.getEpics getEpicNames()[epicIndex];
-//     return epicObj;
-//   };
-
 const getDevsWithRelevantSkill = (nextFreeWeekForEachDev, teamName, skill, parallel) => {
   //TODO implement the use of parallel here. for now assuming it's always 1
   const devsWithRelevantSkillSets = nextFreeWeekForEachDev.filter(dev => dev.name.includes(skill));
@@ -39,7 +28,7 @@ const addEffortToDevs = (tablesWithEfforts, devs, epicName, skillEffort) => {
     dev['w' + currentWeek] = epicName;
     remainingEffort -= getCapacityfor1Dev(tablesWithEfforts, dev.name, currentWeek);
     currentWeek++;
-  };
+  }
   dev.nextFreeWeek = 'w' + currentWeek;
 };
 
@@ -53,16 +42,6 @@ const add1SkillIn1EpicToCorrectDev = (nextFreeWeekForEachDev, teamName, epicName
 
 const priorityComparer = (epic1, epic2) => epic1.priority - epic2.priority;
 
-// const convertToRenderableArray = table => {
-//   let result = [];
-//   getWeekDates().forEach(weekdate => {
-//     let result2 = [];
-//     table.forEach(devPlan => result2.push(devPlan[weekdate] ? devPlan[weekdate] : '-'));
-//     result.push(result2);
-//   });
-//   return result;
-// };
-
 //TODO, capacity looks like {w5:5, w6:3,...etc}. return the lowest week (which isn't 0)
 const getEarliestCapacityForDev = capacity => {
   return 'w5';
@@ -72,13 +51,13 @@ const getEarliestCapacityForDev = capacity => {
 
 const calculatePlan = async teamName => {
   const epics = await dbService.getEpics();
-  const sortedEpicsWithNames = epics.sort(priorityComparer)
+  const sortedEpicsWithNames = epics
+    .sort(priorityComparer)
     .filter(epic => epic.candidate_teams.includes(teamName))
-    //.map(getEpicNameFromEpicObj)
     .map(epic => ({ name: epic.name, estimations: epic.estimations }));
 
   //now each epic should look like this:  {name:'name', estimations:{FE: {est:'5',max_parallel:'1'},....}}
-  const devsCapacity = await dbService.getDevsCapacity()
+  const devsCapacity = await dbService.getDevsCapacity();
   let nextFreeWeekForEachDev = devsCapacity
     .filter(devData => devData.team.toLowerCase() === teamName.toLowerCase())
     .map(devData => {
@@ -101,11 +80,9 @@ const calculatePlan = async teamName => {
       );
     }
   });
-  //const x = convertToRenderableArray(nextFreeWeekForEachDev);
   return nextFreeWeekForEachDev;
 };
 
-
 module.exports = {
   calculatePlan
-}
+};
