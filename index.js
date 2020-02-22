@@ -116,7 +116,7 @@ app.get('/plans', async (req, res, next) => {
   }
 });
 
-//TODO should be post, don't return new plan. insteda, make client listen to changes from server (push notifications?)
+//TODO should be post, don't return new plan. insted, make client listen to changes from server (push notifications?)
 app.get('/plans/recalculate&team=:team', async (req, res, next) => {
   try {
     const teamName = req.params['team'].toLowerCase();
@@ -124,11 +124,27 @@ app.get('/plans/recalculate&team=:team', async (req, res, next) => {
       throw `team does not exist! ${teamName}`;
     }
     const newPlans = await planCalculator.calculatePlan(teamName);
-    res.json(newPlans);
+    await dbService.setPlans(teamName, newPlans);
+
+    const plans = await dbService.getPlans(teamName);
+    res.json(plans);
   } catch (e) {
     console.log('/plans/recalculate failed! because: ', e);
     res.json({});
   }
 });
 
-
+app.get('/plans/team/:team', async (req, res, next) => {
+  try {
+    const teamName = req.params['team'];
+    if (await !isTeamExists(teamName)) {
+      throw `team does not exist! ${teamName}`;
+    }
+    const plans = await dbService.getPlans(teamName);
+    console.log(JSON.stringify(plans));
+    res.json(plans);
+  } catch (e) {
+    console.log('/plans/team/ failed! because: ', e);
+    res.json({});
+  }
+});

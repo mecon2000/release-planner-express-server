@@ -35,13 +35,24 @@ const getEpics = async () => {
   return data.val();
 };
 
-//TODO should either handle teamName, or remove altogether (+remove app.get('/plans&team=:team'))
-const getPlans = async (teamName) => {
-  let data = await db.ref('plans').once('value');
+const getPlans = async teamName => {
+  const pathToData = teamName ? `plans/${teamName}` : `plans`;
+  let data = await db.ref(pathToData).once('value');
   return data.val();
 };
 
 //#endregion getters
+
+//#region setters
+
+const setPlans = async (teamName, newPlans) => {
+  const pathToData = teamName ? `plans/${teamName}` : `plans`;
+  let ref = db.ref(pathToData);
+  await ref.set(newPlans);
+};
+
+//#endregion setters
+
 //#region initializing the DB
 
 const resetToInitialDB = async () => {
@@ -112,14 +123,18 @@ const setInitialEpics = async () => {
 };
 
 const setInitialPlans = async () => {
-  const plans = [
-    { week: 'w05', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
-    { week: 'w06', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
-    { week: 'w07', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
-    { week: 'w08', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
-    { week: 'w09', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
-    { week: 'w10', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
-  ];
+  // prettier-ignore
+  const plans = { 
+    Spiders: 
+    [
+      { week: 'w05', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+      { week: 'w06', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+      { week: 'w07', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
+      { week: 'w08', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+      { week: 'w09', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+      { week: 'w10', epics: [{dev:'shay-FE', epicName: "accnt-Mng"}, {dev:'Lior-BE', epicName: "accnt-Mng"}]},
+    ]
+  };
   let ref = db.ref('plans');
   await ref.set(plans);
 };
@@ -150,7 +165,7 @@ const setInitialPlans = async () => {
 //   // });
 // };
 
- //f();
+//f();
 
 module.exports = {
   resetToInitialDB,
@@ -159,5 +174,6 @@ module.exports = {
   getDevsCapacity,
   getReleases,
   getEpics,
-  getPlans
+  getPlans,
+  setPlans
 };
