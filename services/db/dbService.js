@@ -89,12 +89,12 @@ const setInitialTeams = async () => {
 const setInitialDevsCapacity = async () => {
   // prettier-ignore
   const devs = [
-    { name: "Shay-FE", team: "Spiders", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "lior-BE", team: "Spiders", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Jenny-FE", team: "Sharks", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Shanni-BE", team: "Sharks", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Tolik-BE", team: "Threads", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Daniel-FE", team: "Threads", capacity: {w5:"5", w6:"5", w7:"5", w8:"5", w9:"5", w10:"5", w11:"5", w12:"5"} }
+    { name: "Shay-FE", team: "Spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "lior-BE", team: "Spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Jenny-FE", team: "Sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Shanni-BE", team: "Sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Tolik-BE", team: "Threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Daniel-FE", team: "Threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} }
   ];
   let ref = db.ref('devs');
   await ref.set(devs);
