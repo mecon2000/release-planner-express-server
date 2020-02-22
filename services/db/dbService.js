@@ -59,10 +59,9 @@ const resetToInitialDB = async () => {
   setInitialGroups();
   setInitialTeams();
   setInitialDevsCapacity();
-  setInitialDevs();
   setInitialReleases();
   setInitialEpics();
-  setInitialPlans();
+  //setInitialPlans();
 };
 
 const setInitialGroups = async () => {
@@ -72,14 +71,14 @@ const setInitialGroups = async () => {
 
 const setInitialTeams = async () => {
   const devDetails = [
-    { name: 'Spiders', group: 'Web', devs: ['shay-FE', 'lior-BE'] },
-    { name: 'Sharks', group: 'Web', devs: ['Jenny-FE', 'Shanni-BE'] },
-    { name: 'Threads', group: 'Web', devs: ['Tolik-BE', 'Daniel-FE'] },
-    { name: 'Gold Strikers', group: 'Core', devs: [] },
-    { name: 'Goblins', group: 'Core', devs: [] },
-    { name: 'Blues', group: 'Core', devs: [] },
-    { name: 'Seals', group: 'Scanner', devs: [] },
-    { name: 'Team 13', group: 'Scanner', devs: [] }
+    { name: 'spiders', group: 'Web', devs: ['shay-FE', 'lior-BE'] },
+    { name: 'sharks', group: 'Web', devs: ['Jenny-FE', 'Shanni-BE'] },
+    { name: 'threads', group: 'Web', devs: ['Tolik-BE', 'Daniel-FE'] },
+    { name: 'gold strikers', group: 'Core', devs: [] },
+    { name: 'goblins', group: 'Core', devs: [] },
+    { name: 'blues', group: 'Core', devs: [] },
+    { name: 'seals', group: 'Scanner', devs: [] },
+    { name: 'team 13', group: 'Scanner', devs: [] }
   ];
 
   let ref = db.ref('teams');
@@ -89,12 +88,12 @@ const setInitialTeams = async () => {
 const setInitialDevsCapacity = async () => {
   // prettier-ignore
   const devs = [
-    { name: "Shay-FE", team: "Spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "lior-BE", team: "Spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Jenny-FE", team: "Sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Shanni-BE", team: "Sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Tolik-BE", team: "Threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
-    { name: "Daniel-FE", team: "Threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} }
+    { name: "Shay-FE", team: "spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "lior-BE", team: "spiders", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Jenny-FE", team: "sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Shanni-BE", team: "sharks", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Tolik-BE", team: "threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} },
+    { name: "Daniel-FE", team: "threads", capacity: {w05:"5", w06:"5", w07:"5", w08:"5", w09:"5", w10:"5", w11:"5", w12:"5"} }
   ];
   let ref = db.ref('devs');
   await ref.set(devs);
@@ -113,10 +112,10 @@ const setInitialReleases = async () => {
 const setInitialEpics = async () => {
   // prettier-ignore
   const epics = [
-    { name: 'Snapshot wave 2',              shortName: 'snapshot w2', release: '20B', priority: '100', program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '6',  max_parallel: '1' }, Core: { est: '5',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['Spiders', 'Gold Strikers']},
-    { name: 'Patient-management with IDS',  shortName: 'patient-mng', release: '20B', priority: '200', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '7',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['Sharks', 'Gold Strikers']},
-    { name: 'Texture mapping',              shortName: 'texture',     release: '20B', priority: '300', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '0',  max_parallel: '1' }, Core: { est: '10', max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['Spiders', 'Gold Strikers']},
-    { name: 'Account management',           shortName: 'accnt-mng',   release: '20A5',priority: '50',  program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '0',  max_parallel: '0' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['Spiders']}
+    { name: 'Snapshot wave 2',              shortName: 'snapshot w2', release: '20B', priority: '100', program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '6',  max_parallel: '1' }, Core: { est: '5',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['spiders', 'gold strikers']},
+    { name: 'Patient-management with IDS',  shortName: 'patient-mng', release: '20B', priority: '200', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '7',  max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['sharks', 'gold strikers']},
+    { name: 'Texture mapping',              shortName: 'texture',     release: '20B', priority: '300', program: 'ortho', estimations: {FE: { est: '10', max_parallel: '1' }, BE: { est: '0',  max_parallel: '1' }, Core: { est: '10', max_parallel: '1' }, Scanner: { est: '0', max_parallel: '1' }, MSK: { est: '0', max_parallel: '1' }, ALG: { est: '0', max_parallel: '1' }}, candidate_teams: ['spiders', 'gold strikers']},
+    { name: 'Account management',           shortName: 'accnt-mng',   release: '20A5',priority: '50',  program: 'ortho', estimations: {FE: { est: '15', max_parallel: '1' }, BE: { est: '15', max_parallel: '1' }, Core: { est: '0',  max_parallel: '0' }, Scanner: { est: '0', max_parallel: '0' }, MSK: { est: '0', max_parallel: '0' }, ALG: { est: '0', max_parallel: '0' }}, candidate_teams: ['spiders']}
   ];
   let ref = db.ref('epics');
   await ref.set(epics);
@@ -125,7 +124,7 @@ const setInitialEpics = async () => {
 const setInitialPlans = async () => {
   // prettier-ignore
   const plans = { 
-    Spiders: 
+    spiders: 
     [
       { week: 'w05', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
       { week: 'w06', epics: [{dev:'shay-FE', epicName: "snapshot"}, {dev:'Lior-BE', epicName: "snapshot"}]},
@@ -146,24 +145,14 @@ const setInitialPlans = async () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //  const f = async () => {
-//      await setInitialPlans();
+//      await resetToInitialDB();
 //  }
 //   await setInitialTeams();
 //   await setInitialReleases();
 //   await setInitialDevsCapacity();
 //   await setInitialEpics();
 
-//   // await ref.child('users').set({ some: 'obj', foo: 'bar' });
 
-//   // await ref.once('value', snapshot => {console.log(snapshot.val())});
-
-//   // let updates = {};
-//   // updates['/users/some'] = 'ANOTHER OBJECT';
-//   // await ref.update(updates);
-
-//   // await ref.once('value', snapshot => {console.log(snapshot.val());
-//   // });
-// };
 
 //f();
 
